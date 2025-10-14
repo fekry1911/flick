@@ -5,34 +5,31 @@ import Logins from "../Screens/auth/Login/Logins";
 import Register from "../Screens/auth/register";
 import Home from "../Screens/Home/Home";
 import { getData } from "../utils/local";
+import { ActivityIndicator, View } from "react-native";
+import SplashScreen from "../Screens/splashScreen/SplashScreen";
 
 const Stack = createNativeStackNavigator();
 
 function MyStack() {
   const [userName, setUserName] = useState("");
-  const [initialRoute, setInitialRoute] = useState("");
 
   useEffect(() => {
     const fetchUserName = async () => {
       const name = await getData("name");
-      const token = await getData("token");
-      if (token) {
-        setInitialRoute(routers.home);
-      } else {
-        setInitialRoute(routers.login);
-      }
 
-      if (name) {
-        console.error(name);
-
-        setUserName(name);
-      }
+      if (name) setUserName(name);
     };
+
     fetchUserName();
   }, []);
 
   return (
-    <Stack.Navigator initialRouteName={initialRoute}>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={routers.splash}
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name={routers.login}
         component={Logins}

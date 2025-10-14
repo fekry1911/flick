@@ -4,14 +4,19 @@ import Logins from "./Screens/auth/Login/Logins";
 import { NavigationContainer } from "@react-navigation/native";
 import MyStack from "./navigation/stack";
 import { ToastProvider } from "react-native-toast-notifications";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <ToastProvider>
-      <NavigationContainer>
-        <MyStack />
-      </NavigationContainer>
-    </ToastProvider>
+    <QueryClientProvider client={queryClient}>
+      <ToastProvider>
+        <NavigationContainer>
+          <MyStack />
+        </NavigationContainer>
+      </ToastProvider>
+    </QueryClientProvider>
   );
 }
 
