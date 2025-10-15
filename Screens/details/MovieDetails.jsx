@@ -6,7 +6,7 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useContext, useEffect } from "react";
 import Feather from "@expo/vector-icons/Feather";
 import SvgComponent from "../../components/shared/Star";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -15,13 +15,16 @@ import { getMovieActorsById, getMovieById } from "../../apis/handleApis";
 import { IMAGE_BASE_URL } from "../../utils/Api_keys";
 import { ActivityIndicator } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { FavContext } from "../../context/FavContext";
 
 export default function MovieDetails() {
-  const [fav, setfav] = useState(false);
   const route = useRoute();
   const { id } = route.params;
-  const [more, setMore] = useState(false);
   const navigation = useNavigation();
+  const { allFav, setAllFav } = useContext(FavContext);
+
+  const [fav, setFav] = useState(false);
+  const [more, setMore] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,25 +35,18 @@ export default function MovieDetails() {
       headerTintColor: "#fff",
     });
   }, [navigation]);
-  const {
-    data: movieDetails,
-    isLoading: loadingMovie,
-    error: errorMovie,
-  } = useQuery({
+
+  const { data: movie, isLoading: loadingMovie } = useQuery({
     queryKey: ["MovieDetails", id],
     queryFn: () => getMovieById(id),
   });
 
-  const {
-    data: actorsDetails,
-    isLoading: loadingActors,
-    error: errorActors,
-  } = useQuery({
+  const { data: actorsDetails, isLoading: loadingActors } = useQuery({
     queryKey: ["ActorsDetails", id],
     queryFn: () => getMovieActorsById(id),
   });
 
-  if (loadingMovie) {
+  if (loadingMovie || !movie) {
     return (
       <View
         style={{
@@ -65,7 +61,17 @@ export default function MovieDetails() {
     );
   }
 
-  const movie = movieDetails;
+  useEffect(() => {
+    setFav(allFav.includes(movie.id));
+  }, [allFav, movie?.id]);
+
+  const toggleFav = (id) => {
+    if (allFav.includes(id)) {
+      setAllFav(allFav.filter((favId) => favId !== id));
+    } else {
+      setAllFav([...allFav, id]);
+    }
+  };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#1F1F29" }}>
@@ -103,17 +109,14 @@ export default function MovieDetails() {
             </Text>
           </View>
         </View>
-        {fav ? (
-          <Pressable onPress={() => setfav(!fav)}>
-            {" "}
-            <AntDesign name="heart" size={24} color="red" />
-          </Pressable>
-        ) : (
-          <Pressable onPress={() => setfav(!fav)}>
-            {" "}
-            <Feather name="heart" size={24} color="white" />
-          </Pressable>
-        )}
+
+        <Pressable onPress={() => toggleFav(movie.id)}>
+          {fav ? (
+            <AntDesign name="heart" size={26} color="red" />
+          ) : (
+            <Feather name="heart" size={26} color="white" />
+          )}
+        </Pressable>
       </View>
 
       <Text
@@ -164,7 +167,7 @@ export default function MovieDetails() {
         <ActivityIndicator color="white" />
       ) : (
         <FlatList
-          data={actorsDetails.cast}
+          data={actorsDetails?.cast || []}
           keyExtractor={(item) => item.id.toString()}
           horizontal
           contentContainerStyle={{ paddingHorizontal: 10 }}

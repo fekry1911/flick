@@ -52,7 +52,7 @@ export default function Home() {
   });
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: "#1F1F29" }}>
       <View style={styles.container}>
         <View style={styles.mmain}>
           <TextInput
