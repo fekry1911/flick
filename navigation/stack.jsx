@@ -9,6 +9,9 @@ import { ActivityIndicator, View } from "react-native";
 import SplashScreen from "../Screens/splashScreen/SplashScreen";
 import MovieDetails from "../Screens/details/MovieDetails";
 import AllMovies from "../Screens/allMovies/AllMovies";
+import MyTabs from "./bottomTabs";
+import search from "../Screens/search/search";
+import Search from "../Screens/search/search";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +31,11 @@ function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
+        name={routers.bottom}
+        component={MyTabs}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name={routers.splash}
         component={SplashScreen}
         options={{ headerShown: false }}
@@ -45,17 +53,6 @@ function MyStack() {
       />
 
       <Stack.Screen
-        name={routers.home}
-        component={Home}
-        options={{
-          headerBackVisible: false,
-          headerStyle: { backgroundColor: "#1F1F29" },
-          headerTitleStyle: { color: "white" },
-          headerTitle: `Welcome ${userName || ""}`,
-          headerTitleAlign: "center",
-        }}
-      />
-      <Stack.Screen
         name={routers.details}
         component={MovieDetails}
         options={{
@@ -69,6 +66,18 @@ function MyStack() {
       <Stack.Screen
         name={routers.movies}
         component={AllMovies}
+        options={{
+          headerBackVisible: true,
+          headerBackTitleStyle: { color: "white" },
+          headerStyle: { backgroundColor: "#1F1F29" },
+          headerTitleStyle: { color: "white" },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
+        }}
+      />
+      <Stack.Screen
+        name={routers.search}
+        component={Search}
         options={{
           headerBackVisible: true,
           headerBackTitleStyle: { color: "white" },

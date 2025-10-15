@@ -16,6 +16,7 @@ import { IMAGE_BASE_URL } from "../../utils/Api_keys";
 import { ActivityIndicator } from "react-native-paper";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { FavContext } from "../../context/FavContext";
+import Loading from "../../components/animations/Loading";
 
 export default function MovieDetails() {
   const route = useRoute();
@@ -46,23 +47,8 @@ export default function MovieDetails() {
     queryFn: () => getMovieActorsById(id),
   });
 
-  if (loadingMovie || !movie) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "#1F1F29",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator size="large" color="#fff" />
-      </View>
-    );
-  }
-
   useEffect(() => {
-    setFav(allFav.includes(movie.id));
+    if (movie?.id) setFav(allFav.includes(movie.id));
   }, [allFav, movie?.id]);
 
   const toggleFav = (id) => {
@@ -72,6 +58,37 @@ export default function MovieDetails() {
       setAllFav([...allFav, id]);
     }
   };
+
+  if (loadingMovie) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#1F1F29",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loading />
+      </View>
+    );
+  }
+
+  if (!movie) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#1F1F29",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingVertical: 30,
+        }}
+      >
+        <Text style={{ color: "white" }}>No Movie Found 😢</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "#1F1F29" }}>
@@ -164,7 +181,7 @@ export default function MovieDetails() {
       </Text>
 
       {loadingActors ? (
-        <ActivityIndicator color="white" />
+        <Loading />
       ) : (
         <FlatList
           data={actorsDetails?.cast || []}
@@ -180,7 +197,7 @@ export default function MovieDetails() {
 
 function ActorCard({ actor }) {
   return (
-    <View style={{ marginRight: 15, alignItems: "center" }}>
+    <View style={{ marginRight: 15, alignItems: "center", marginBottom: 15 }}>
       <Image
         source={{
           uri: actor.profile_path

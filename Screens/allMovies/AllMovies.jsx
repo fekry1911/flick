@@ -11,6 +11,7 @@ import { ActivityIndicator } from "react-native-paper";
 import MovieCard from "../../components/shared/MovieCard";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
+import Loading from "../../components/animations/Loading";
 
 export default function AllMovies({ route }) {
   const { method, title } = route.params;
@@ -35,7 +36,7 @@ export default function AllMovies({ route }) {
   if (isLoading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator color="white" size={30} />
+        <Loading />
       </View>
     );
   }
@@ -43,11 +44,7 @@ export default function AllMovies({ route }) {
   return (
     <View style={styles.container}>
       {isFetching ? (
-        <ActivityIndicator
-          color="white"
-          size={25}
-          style={{ marginVertical: 10 }}
-        />
+        <Loading />
       ) : (
         <View
           style={{

@@ -49,12 +49,9 @@ export default function Logins() {
               duration: 4000,
               animationType: "zoom-in",
             });
-            console.error(response.data.token);
-            console.error(response.data.username);
-
             await storeData("token", response.data.token);
             await storeData("name", response.data.username);
-            navigate.navigate(routers.home);
+            navigate.navigate(routers.bottom);
           } catch (error) {
             let mainError = error.response.data.message;
             console.error(mainError);

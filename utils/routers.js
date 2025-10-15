@@ -5,5 +5,9 @@ const routers = Object.freeze({
   splash: "splash",
   details: "details",
   movies: "movies",
+  fav: "fav",
+  profile: "profile",
+  bottom: "bottom",
+  search: "search",
 });
 export default routers;

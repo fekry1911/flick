@@ -3,13 +3,15 @@ import React from "react";
 import { IMAGE_BASE_URL } from "../../utils/Api_keys";
 import SvgComponent from "./Star";
 import play from "../../assets/images/play.png";
+import { useNavigation } from "@react-navigation/native";
+import routers from "../../utils/routers";
 
 export default function PopularCompo({ movie }) {
+  const navigation = useNavigation();
+
   return (
     <Pressable
-      onPress={() => {
-        console.error(movie.id);
-      }}
+      onPress={() => navigation.navigate(routers.details, { id: movie.id })}
     >
       <ImageBackground
         style={{

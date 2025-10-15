@@ -16,6 +16,7 @@ import AnimationAuth from "../../components/animations/authAnimation";
 import animation from "../../assets/animations/register.json";
 import { handleRegister } from "../../apis/handleApis";
 import { useToast } from "react-native-toast-notifications";
+import { storeData } from "../../utils/local";
 
 const LoginSchema = Yup.object().shape({
   name: Yup.string()
@@ -51,7 +52,7 @@ export default function Register() {
           initialValues={{ email: "", password: "", name: "", phone: "" }}
           onSubmit={async (values) => {
             try {
-              const res = await handleRegister({
+              let response = await handleRegister({
                 name: values.name,
                 email: values.email,
                 gender: 0,
@@ -59,12 +60,15 @@ export default function Register() {
                 password_confirmation: values.password,
                 phone: values.phone,
               });
-              console.error("REGISTERED:", res);
-              toast.show(res.message, {
+              toast.show(response.message, {
                 type: "success",
                 duration: 4000,
                 animationType: "zoom-in",
               });
+              console.error(values.phone);
+
+              await storeData("phone", values.phone);
+              await storeData("email", values.email);
               navigate.navigate(routers.login);
             } catch (error) {
               let errorMessage = error.response.data;

@@ -28,10 +28,10 @@ import { Rating } from "react-native-ratings";
 import MovieCard from "../../components/shared/MovieCard";
 import { useNavigation } from "@react-navigation/native";
 import routers from "../../utils/routers";
+import Loading from "../../components/animations/Loading";
 
 export default function Home() {
   let navigation = useNavigation();
-  let [num, setnum] = useState(1);
 
   const { data: popular, isLoading: loadingPopular } = useQuery({
     queryKey: ["popularMovies"],
@@ -56,6 +56,8 @@ export default function Home() {
       <View style={styles.container}>
         <View style={styles.mmain}>
           <TextInput
+            showSoftInputOnFocus={false}
+            onFocus={() => navigation.navigate(routers.search)}
             style={styles.input}
             placeholder="Search."
             placeholderTextColor="#999"
@@ -63,11 +65,7 @@ export default function Home() {
         </View>
 
         {loadingPopular && !popular ? (
-          <ActivityIndicator
-            style={{ margin: 30 }}
-            size="large"
-            color="#ffffffff"
-          />
+          <Loading />
         ) : (
           <CarouselMomentum
             loop
@@ -108,11 +106,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         {loadingTopRated && !topRated ? (
-          <ActivityIndicator
-            style={{ margin: 30 }}
-            size="large"
-            color="#ffffffff"
-          />
+          <Loading />
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -149,11 +143,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
         {loadingupComing && !upComing ? (
-          <ActivityIndicator
-            style={{ margin: 30 }}
-            size="large"
-            color="#ffffffff"
-          />
+          <Loading />
         ) : (
           <FlatList
             data={upComing}
@@ -190,11 +180,7 @@ export default function Home() {
           </TouchableOpacity>{" "}
         </View>
         {loadingNowwPlaying && !nowPlaying ? (
-          <ActivityIndicator
-            style={{ margin: 30 }}
-            size="large"
-            color="#ffffffff"
-          />
+          <Loading />
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}

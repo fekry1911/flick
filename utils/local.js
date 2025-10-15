@@ -31,3 +31,10 @@ export const getFavs = async () => {
     return [];
   }
 };
+export const removeValue = async (key) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {}
+
+  console.log("Done.");
+};

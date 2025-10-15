@@ -88,3 +88,15 @@ export async function getMovieActorsById(id) {
     throw error;
   }
 }
+export async function getMovieByName(name) {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/search/movie?api_key=898b4d5c1b1b33f5e6bf15c99c48d29f&query=${name}`
+    );
+    console.error(response.data.results);
+    return response.data.results;
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    throw error;
+  }
+}
