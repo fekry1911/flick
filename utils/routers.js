@@ -3,5 +3,7 @@ const routers = Object.freeze({
   register: "register",
   home: "home",
   splash: "splash",
+  details: "details",
+  movies: "movies",
 });
 export default routers;

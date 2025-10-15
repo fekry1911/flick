@@ -7,6 +7,8 @@ import Home from "../Screens/Home/Home";
 import { getData } from "../utils/local";
 import { ActivityIndicator, View } from "react-native";
 import SplashScreen from "../Screens/splashScreen/SplashScreen";
+import MovieDetails from "../Screens/details/MovieDetails";
+import AllMovies from "../Screens/allMovies/AllMovies";
 
 const Stack = createNativeStackNavigator();
 
@@ -51,6 +53,29 @@ function MyStack() {
           headerTitleStyle: { color: "white" },
           headerTitle: `Welcome ${userName || ""}`,
           headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name={routers.details}
+        component={MovieDetails}
+        options={{
+          headerBackVisible: true,
+          headerBackTitleStyle: { color: "white" },
+          headerStyle: { backgroundColor: "#1F1F29" },
+          headerTitleStyle: { color: "white" },
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name={routers.movies}
+        component={AllMovies}
+        options={{
+          headerBackVisible: true,
+          headerBackTitleStyle: { color: "white" },
+          headerStyle: { backgroundColor: "#1F1F29" },
+          headerTitleStyle: { color: "white" },
+          headerTitleAlign: "center",
+          headerTintColor: "#fff",
         }}
       />
     </Stack.Navigator>

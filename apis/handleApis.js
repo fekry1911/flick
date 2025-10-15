@@ -33,9 +33,9 @@ export async function getPopular() {
     throw error;
   }
 }
-export async function gettopRated() {
+export async function gettopRated(page) {
   try {
-    const response = await axios.get(endpoints.topRated);
+    const response = await axios.get(`${endpoints.topRated}&page=${page}`);
     console.error(response.data.results);
     return response.data.results;
   } catch (error) {
@@ -43,9 +43,9 @@ export async function gettopRated() {
     throw error;
   }
 }
-export async function getNowPlating() {
+export async function getNowPlaying(page) {
   try {
-    const response = await axios.get(endpoints.nowPlaying);
+    const response = await axios.get(`${endpoints.nowPlaying}&page=${page}`);
     console.error(response.data.results);
     return response.data.results;
   } catch (error) {
@@ -53,11 +53,36 @@ export async function getNowPlating() {
     throw error;
   }
 }
-export async function getUpComing() {
+export async function getUpComing(page) {
   try {
-    const response = await axios.get(endpoints.upcoming);
+    const response = await axios.get(`${endpoints.upcoming}&page=${page}`);
     console.error(response.data.results);
     return response.data.results;
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    throw error;
+  }
+}
+
+export async function getMovieById(id) {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=898b4d5c1b1b33f5e6bf15c99c48d29f`
+    );
+    console.error(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    throw error;
+  }
+}
+export async function getMovieActorsById(id) {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=898b4d5c1b1b33f5e6bf15c99c48d29f`
+    );
+    console.error(response.data);
+    return response.data;
   } catch (error) {
     console.error(error.response?.data || error.message);
     throw error;
