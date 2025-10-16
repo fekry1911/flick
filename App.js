@@ -22,13 +22,3 @@ export default function App() {
     </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1F1F29",
-  },
-  text: {
-    color: "white",
-  },
-});

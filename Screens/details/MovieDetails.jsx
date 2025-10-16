@@ -91,7 +91,10 @@ export default function MovieDetails() {
   }
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: "#1F1F29" }}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ flex: 1, backgroundColor: "#1F1F29" }}
+    >
       <Image
         resizeMode="stretch"
         style={{ width: "100%", height: 400 }}

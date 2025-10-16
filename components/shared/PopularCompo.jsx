@@ -1,12 +1,12 @@
-import { View, Text, ImageBackground, Pressable, Image } from "react-native";
 import React from "react";
+import { View, Text, ImageBackground, Image, Pressable } from "react-native";
 import { IMAGE_BASE_URL } from "../../utils/Api_keys";
 import SvgComponent from "./Star";
 import play from "../../assets/images/play.png";
 import { useNavigation } from "@react-navigation/native";
 import routers from "../../utils/routers";
 
-export default function PopularCompo({ movie }) {
+function PopularCompoComponent({ movie }) {
   const navigation = useNavigation();
 
   return (
@@ -22,9 +22,7 @@ export default function PopularCompo({ movie }) {
           marginHorizontal: "auto",
           padding: 0,
         }}
-        source={{
-          uri: `${IMAGE_BASE_URL}${movie.poster_path}`,
-        }}
+        source={{ uri: `${IMAGE_BASE_URL}${movie.poster_path}` }}
       >
         <View
           style={{
@@ -44,7 +42,6 @@ export default function PopularCompo({ movie }) {
                 marginBottom: 20,
                 fontSize: 24,
                 fontWeight: "bold",
-
                 color: "white",
               }}
             >
@@ -59,6 +56,7 @@ export default function PopularCompo({ movie }) {
               {movie.overview}
             </Text>
           </View>
+
           <View
             style={{
               width: "35%",
@@ -73,6 +71,7 @@ export default function PopularCompo({ movie }) {
             <SvgComponent />
           </View>
         </View>
+
         <View
           style={{
             padding: 10,
@@ -89,3 +88,5 @@ export default function PopularCompo({ movie }) {
     </Pressable>
   );
 }
+
+export default React.memo(PopularCompoComponent);

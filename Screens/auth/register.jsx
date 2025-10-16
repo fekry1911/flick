@@ -118,7 +118,8 @@ export default function Register() {
                 style={[
                   styles.input,
                   {
-                    borderColor: errors.password ? "red" : "white",
+                    borderColor:
+                      touched.email && errors.email ? "red" : "white",
                   },
                 ]}
                 placeholder="Email"
@@ -135,7 +136,8 @@ export default function Register() {
                 style={[
                   styles.input,
                   {
-                    borderColor: errors.password ? "red" : "white",
+                    borderColor:
+                      touched.password && errors.password ? "red" : "white",
                   },
                 ]}
                 placeholder="Password"

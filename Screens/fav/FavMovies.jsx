@@ -71,6 +71,7 @@ export default function FavScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: "#1F1F29", paddingVertical: 10 }}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={movies}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}

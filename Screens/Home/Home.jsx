@@ -15,6 +15,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import {
+  getGenres,
+  getMoviesGenres,
   getNowPlaying,
   getPopular,
   gettopRated,
@@ -32,7 +34,7 @@ import Loading from "../../components/animations/Loading";
 
 export default function Home() {
   let navigation = useNavigation();
-
+  const [cateId, setcateID] = useState(28);
   const { data: popular, isLoading: loadingPopular } = useQuery({
     queryKey: ["popularMovies"],
     queryFn: () => getPopular(1),
@@ -50,9 +52,20 @@ export default function Home() {
     queryKey: ["nowPlayingMovies"],
     queryFn: () => getNowPlaying(1),
   });
+  const { data: geners, isLoading: loadingGeners } = useQuery({
+    queryKey: ["GetGenres"],
+    queryFn: getGenres,
+  });
+  const { data: genersMovies, isLoading: loadingGenersMovies } = useQuery({
+    queryKey: ["GetGenresMovies", cateId],
+    queryFn: () => getMoviesGenres(cateId),
+  });
 
   return (
-    <ScrollView style={{ backgroundColor: "#1F1F29" }}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: "#1F1F29" }}
+    >
       <View style={styles.container}>
         <View style={styles.mmain}>
           <TextInput
@@ -109,7 +122,7 @@ export default function Home() {
           <Loading />
         ) : (
           <FlatList
-            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={topRated}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <MovieCard movie={item} />}
@@ -147,7 +160,7 @@ export default function Home() {
         ) : (
           <FlatList
             data={upComing}
-            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <MovieCard movie={item} />}
             horizontal={true}
@@ -177,13 +190,13 @@ export default function Home() {
               size={30}
               color="white"
             />
-          </TouchableOpacity>{" "}
+          </TouchableOpacity>
         </View>
         {loadingNowwPlaying && !nowPlaying ? (
           <Loading />
         ) : (
           <FlatList
-            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={nowPlaying}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => <MovieCard movie={item} />}
@@ -191,6 +204,79 @@ export default function Home() {
           />
         )}
       </View>
+      <View
+        style={{
+          width: "95%",
+          marginHorizontal: "auto",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 15,
+        }}
+      >
+        <Text style={{ color: "white" }}>Chosse Your Category</Text>
+      </View>
+
+      {loadingGeners && !geners ? (
+        <Loading />
+      ) : (
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: 10 }}
+          data={geners}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{
+                borderWidth: 1,
+                borderColor: "#fff",
+                borderRadius: 20,
+                paddingVertical: 8,
+                paddingHorizontal: 16,
+                backgroundColor:
+                  cateId == item.id ? "rgba(105, 105, 221, 1)" : "#2A2A3B",
+                marginRight: 10,
+              }}
+              onPress={() => {
+                setcateID(item.id);
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 14, fontWeight: "500" }}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          horizontal={true}
+        />
+      )}
+      {loadingGenersMovies && !genersMovies ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Loading />
+        </View>
+      ) : (
+        <FlatList
+          data={genersMovies}
+          renderItem={({ item }) => <MovieCard movie={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
+          contentContainerStyle={{
+            paddingHorizontal: 10,
+            marginTop: 20,
+            paddingBottom: 30,
+            justifyContent: "space-between",
+            alignItems: "center",
+            rowGap: 20,
+          }}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
+          }}
+        />
+      )}
     </ScrollView>
   );
 }
@@ -214,5 +300,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     width: "100%",
+  },
+  gridContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 30,
   },
 });

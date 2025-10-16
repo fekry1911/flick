@@ -1,5 +1,5 @@
-import { View, Text, ImageBackground, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { View, Text, ImageBackground, Pressable } from "react-native";
 import { Rating } from "react-native-ratings";
 import { IMAGE_BASE_URL } from "../../utils/Api_keys";
 import { useNavigation } from "@react-navigation/native";
@@ -8,7 +8,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { Feather } from "@expo/vector-icons";
 import { FavContext } from "../../context/FavContext";
 
-export default function MovieCard({ movie }) {
+function MovieCardComponent({ movie }) {
   const navigation = useNavigation();
   const { allFav, setAllFav } = useContext(FavContext);
 
@@ -39,9 +39,7 @@ export default function MovieCard({ movie }) {
         }}
       >
         <ImageBackground
-          source={{
-            uri: `${IMAGE_BASE_URL}${movie.poster_path}`,
-          }}
+          source={{ uri: `${IMAGE_BASE_URL}${movie.poster_path}` }}
           style={{
             width: 150,
             height: 217,
@@ -65,7 +63,6 @@ export default function MovieCard({ movie }) {
         <Text
           style={{ color: "white", marginBottom: 10, fontSize: 15 }}
           numberOfLines={1}
-          ellipsizeMode="tail"
         >
           {movie.original_title}
         </Text>
@@ -82,3 +79,5 @@ export default function MovieCard({ movie }) {
     </Pressable>
   );
 }
+
+export default React.memo(MovieCardComponent);
